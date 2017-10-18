@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.template.com.mapper.RoleMapper" >
+    <resultMap id="BaseResultMap" type="org.template.com.model.Role" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+        <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+        <result column="role_remark" property="roleRemark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, role_code, role_name, role_remark
+    </sql>
+
+    <select id="loadRolesByUserName" resultMap="BaseResultMap"  >
+       SELECT r.id, role_code, role_name, role_remark 
+       FROM role r inner join user_role ru on r.id=ru.role_id 
+       	inner join users u on ru.user_id = u.id where u.user_name=#{username}
+    </select>
+
+</mapper>

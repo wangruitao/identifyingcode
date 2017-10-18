@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.template.com.mapper.UserMapper">
+	<resultMap id="BaseResultMap" type="org.template.com.model.Users">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="user_name" property="name" jdbcType="VARCHAR" />
+		<result column="log_name" property="logName" jdbcType="VARCHAR" />
+		<result column="user_password" property="userPassword"
+			jdbcType="VARCHAR" />
+		<result column="user_level" property="userLevel" javaType="Integer" />
+		<result column="user_loc" property="userLoc" javaType="Integer" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, user_name, log_name, user_password, user_level,
+		user_loc
+	</sql>
+
+	<select id="getAll" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM users
+	</select>
+
+	<select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM users
+		WHERE id = #{id}
+	</select>
+
+	<select id="loadUserByUsername" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM users
+		WHERE log_name = #{username}
+	</select>
+
+	<insert id="insertUser" useGeneratedKeys="true" keyProperty="id"
+		parameterType="org.template.com.model.Users">
+
+		INSERT INTO
+		users
+		(user_name,log_name,user_password,user_level,user_loc)
+		VALUES
+		(#{name},
+		#{logName}, #{userPassword}, #{userLevel}, #{userLoc})
+	</insert>
+
+	<update id="update" parameterType="org.template.com.model.Users">
+		UPDATE users SET
+		<if test="name != null">user_name = #{name},</if>
+		<if test="userPassword != null">user_password = #{userPassword},</if>
+		<if test="userLevel != null">user_level = #{userLevel},</if>
+		<if test="userLoc != null">user_loc = #{userLoc}</if>
+		WHERE id = #{id}
+	</update>
+
+</mapper>
